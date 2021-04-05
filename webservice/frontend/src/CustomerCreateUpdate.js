@@ -17,12 +17,17 @@ class CustomerCreateUpdate extends Component {
         if(params && params.pk)
         {
           customersService.getCustomer(params.pk).then((c)=>{
-            this.refs.firstName.value = c.first_name;
-            this.refs.lastName.value = c.last_name;
-            this.refs.email.value = c.email;
-            this.refs.phone.value = c.phone;
-            this.refs.address.value = c.address;
-            this.refs.description.value = c.description;
+            this.refs.date.value = c.date;
+            this.refs.begin_time.value = c.begin_time;
+            this.refs.end_time.value = c.end_time;
+            this.refs.bit_begin.value = c.bit_begin;
+            this.refs.bit_end.value = c.bit_end;
+            this.refs.candles.value = c.candles;
+            this.refs.operation.value = c.operation;
+            this.refs.tech_parameters.value = c.tech_parameters;
+            this.refs.bottomhole_begin.value = c.bottomhole_begin;
+            this.refs.bottomhole_end.value = c.bottomhole_end;
+            this.refs.source_name.value = c.source_name;
           })
         }
       }
@@ -30,12 +35,17 @@ class CustomerCreateUpdate extends Component {
       handleCreate(){
         customersService.createCustomer(
           {
-            "first_name": this.refs.firstName.value,
-            "last_name": this.refs.lastName.value,
-            "email": this.refs.email.value,
-            "phone": this.refs.phone.value,
-            "address": this.refs.address.value,
-            "description": this.refs.description.value
+            "date": this.refs.date.value,
+            "begin_time": this.refs.begin_time.value,
+            "end_time": this.refs.end_time.value,
+            "bit_begin": this.refs.bit_begin.value,
+            "bit_end": this.refs.bit_end.value,
+            "candles": this.refs.candles.value,
+            "operation": this.refs.operation.value,
+            "tech_parameters": this.refs.tech_parameters.value,
+            "bottomhole_begin": this.refs.bottomhole_begin.value,
+            "bottomhole_end": this.refs.bottomhole_end.value,
+            "source_name": this.refs.source_name.value
         }          
         ).then((result)=>{
           alert("Customer created!");
@@ -47,12 +57,17 @@ class CustomerCreateUpdate extends Component {
         customersService.updateCustomer(
           {
             "pk": pk,
-            "first_name": this.refs.firstName.value,
-            "last_name": this.refs.lastName.value,
-            "email": this.refs.email.value,
-            "phone": this.refs.phone.value,
-            "address": this.refs.address.value,
-            "description": this.refs.description.value
+            "date": this.refs.date.value,
+            "begin_time": this.refs.begin_time.value,
+            "end_time": this.refs.end_time.value,
+            "bit_begin": this.refs.bit_begin.value,
+            "bit_end": this.refs.bit_end.value,
+            "candles": this.refs.candles.value,
+            "operation": this.refs.operation.value,
+            "tech_parameters": this.refs.tech_parameters.value,
+            "bottomhole_begin": this.refs.bottomhole_begin.value,
+            "bottomhole_end": this.refs.bottomhole_end.value,
+            "source_name": this.refs.source_name.value
         }          
         ).then((result)=>{
           console.log(result);
@@ -80,28 +95,48 @@ class CustomerCreateUpdate extends Component {
           <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <label>
-              First Name:</label>
-              <input className="form-control" type="text" ref='firstName' />
+              Date:</label>
+              <input className="form-control" type="text" ref='date' />
             
             <label>
-              Last Name:</label>
-              <input className="form-control" type="text" ref='lastName'/>
+              Begin Time:</label>
+              <input className="form-control" type="text" ref='begin_time'/>
             
             <label>
-              Phone:</label>
-              <input className="form-control" type="text" ref='phone' />
+              End Time:</label>
+              <input className="form-control" type="text" ref='end_time' />
             
             <label>
-              Email:</label>
-              <input className="form-control" type="text" ref='email' />
+              Bit Depth Begin:</label>
+              <input className="form-control" type="text" ref='bit_begin' />
             
             <label>
-              Address:</label>
-              <input className="form-control" type="text" ref='address' />
+              Bit Depth End:</label>
+              <input className="form-control" type="text" ref='bit_end' />
             
             <label>
-              Description:</label>
-              <textarea className="form-control" ref='description' ></textarea>
+              Candles:</label>
+              <input className="form-control" type="text" ref='candles' />
+
+              <label>
+              Operation:</label>
+              <input className="form-control" type="text" ref='operation' />
+
+              <label>
+              Tech Parameters:</label>
+              <input className="form-control" type="text" ref='tech_parameters' />
+
+              <label>
+              Bottomhole Begin:</label>
+              <input className="form-control" type="text" ref='bottomhole_begin' />
+
+              <label>
+              Bottomhole End:</label>
+              <input className="form-control" type="text" ref='bottomhole_end' />
+
+              <label>
+              Source:</label>
+              <input className="form-control" type="text" ref='source_name' />
               
 
             <input className="btn btn-primary" type="submit" value="Submit" />

@@ -57,13 +57,18 @@ class CustomersList extends Component {
           <thead key="thead">
           <tr>
             <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Address</th>
-            <th>Description</th>   
-            <th>Actions</th>   
+            <th>Дата</th>
+            <th>Начало (время)</th>
+            <th>Окончание (время)</th>
+            <th>Длительность (мин)</th>
+            <th>Глубина долота на начало операции</th>
+            <th>Глубина долота на окончание операции</th>
+            <th>Количество свечей</th>
+            <th>Операция</th>
+            <th>Тех. параметры</th>
+            <th>Глубина забоя на начало операции</th>
+            <th>Глубина забоя на окончание операции</th>
+            <th>Источник</th>
           </tr>
           </thead>
 
@@ -72,12 +77,17 @@ class CustomersList extends Component {
 
               <tr key={c.pk}>
                 <td>{c.pk} </td>
-                <td>{c.first_name}</td>
-                <td>{c.last_name}</td>
-                <td>{c.phone}</td>
-                <td>{c.email}</td>
-                <td>{c.address}</td>
-                <td>{c.description}</td>
+                <td>{c.date}</td>
+                <td>{c.begin_time}</td>
+                <td>{c.end_time}</td>
+                <td>{c.bit_begin}</td>
+                <td>{c.bit_end}</td>
+                <td>{c.candles}</td>
+                <td>{c.operation}</td>
+                <td>{c.tech_parameters}</td>
+                <td>{c.bottomhole_begin}</td>
+                <td>{c.bottomhole_end}</td>
+                <td>{c.source_name}</td>
                 <td>
                 <button  onClick={(e)=> this.handleDelete(e,c.pk) }> Delete</button>
                 <a  href={"/customer/" + c.pk}> Update</a> 

@@ -1,13 +1,17 @@
 from django.db import models
 
 class Customer(models.Model):
-    first_name = models.CharField("First name", max_length=255)
-    last_name = models.CharField("Last name", max_length=255)
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    address =  models.TextField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    createdAt = models.DateTimeField("Created At", auto_now_add=True)
+    date = models.CharField("skip", max_length=255)
+    begin_time = models.CharField("skip", max_length=255)
+    end_time = models.CharField("skip", max_length=255)
+    bit_begin = models.CharField("skip", max_length=255)
+    bit_end = models.CharField("skip", max_length=255)
+    candles = models.CharField("skip", max_length=255)
+    operation = models.CharField("skip", max_length=255)
+    tech_parameters = models.CharField("skip", max_length=255)
+    bottomhole_begin = models.CharField("skip", max_length=255)
+    bottomhole_end = models.CharField("skip", max_length=255)
+    source_name = models.CharField("skip", max_length=255)
 
     def __str__(self):
-        return self.first_name
+        return self.operation
