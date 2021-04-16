@@ -1,8 +1,8 @@
 from django.db import models
 
-
 class Operation(models.Model):
     name = models.CharField(max_length=128, verbose_name='Название операции', unique=True)
+    color = models.CharField(max_length=128, verbose_name='Цвет операции', null=True)
 
     def __str__(self):
         return self.name
@@ -10,7 +10,6 @@ class Operation(models.Model):
     class Meta:
         verbose_name = 'Операцию'
         verbose_name_plural = 'Словарь операций'
-
 
 class Source(models.Model):
     name = models.CharField(max_length=128, verbose_name='Название источника')
@@ -22,7 +21,6 @@ class Source(models.Model):
     def __str__(self):
         return self.name
 
-
 class Branch(models.Model):
     name = models.CharField(max_length=128, verbose_name='Название филиала')
 
@@ -33,10 +31,13 @@ class Branch(models.Model):
     def __str__(self):
         return self.name
 
-
 class Well(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE, verbose_name='Филиал')
     name = models.CharField(max_length=128, verbose_name='Название скважины')
+    drill_start_date = models.DateField(verbose_name='Дата начала строительства',blank=True, null=True)
+    drill_start_time = models.TimeField(verbose_name='Время начала строительства',blank=True, null=True)
+    drill_end_date = models.DateField(verbose_name='Дата окончания строительства',blank=True, null=True)
+    drill_end_time = models.TimeField(verbose_name='Время окончания строительства',blank=True, null=True)
 
     class Meta:
         verbose_name = 'Скважину'
@@ -44,7 +45,6 @@ class Well(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Unit(models.Model):
     name = models.CharField(max_length=128, verbose_name='Ед. изм. тех. параметра')
@@ -56,8 +56,7 @@ class Unit(models.Model):
     def __str__(self):
         return self.name
 
-
-class TechParamsDict(models.Model):
+class TechParam(models.Model):
     name = models.CharField(max_length=128, verbose_name='Название тех. параметра')
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, verbose_name='Ед. изм. тех. параметра')
 
@@ -67,23 +66,6 @@ class TechParamsDict(models.Model):
 
     def __str__(self):
         return '{}({})'.format(self.name, self.unit.name)
-
-
-class TechParam(models.Model):
-    param = models.ForeignKey(TechParamsDict, on_delete=models.CASCADE, verbose_name='Название тех. параметра')
-    value = models.DecimalField(
-        decimal_places=6,
-        max_digits=12,
-        verbose_name='Значение тех. параметра'
-    )
-
-    class Meta:
-        verbose_name = 'Тех.параметр операции'
-        verbose_name_plural = 'Тех.параметры операции'
-
-    def __str__(self):
-        return '{}({})'.format(self.param.name, self.param.unit.name)
-
 
 class DrillingOperation(models.Model):
     well = models.ForeignKey(Well, on_delete=models.CASCADE, verbose_name='Скважина')
@@ -102,8 +84,8 @@ class DrillingOperation(models.Model):
         verbose_name='Глубина долота на окончание операции'
     )
     candles_amount = models.PositiveIntegerField(verbose_name='Количество свечей')
-    operation = models.ForeignKey(Operation, on_delete=models.CASCADE, verbose_name='Операция')
-    tech_params = models.ManyToManyField(TechParam, verbose_name='Тех. параметры')
+    operation = models.ForeignKey(Operation, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Операция')
+    tech_params = models.ManyToManyField(TechParam, through='DrillingOperationTechParams', verbose_name='Тех. параметры')
     slaughter_depth_start = models.DecimalField(
         decimal_places=6,
         max_digits=12,
@@ -121,4 +103,26 @@ class DrillingOperation(models.Model):
         verbose_name_plural = 'Операции бурения скважин'
 
     def __str__(self):
-        return 'Операция "{}" для скважины "{}"'.format(self.operation.name, self.well.name)
+        if self.operation:
+            return 'Операция "{}" для скважины "{}"'.format(self.operation.name, self.well.name)
+        else:
+            return 'Операция для скважины "{}"'.format(self.well.name)
+
+class DrillingOperationTechParams(models.Model):
+    operation = models.ForeignKey(DrillingOperation, models.CASCADE, related_name='operation_to_param', verbose_name='Операция бурения')
+    param = models.ForeignKey(TechParam, models.CASCADE, related_name='param_to_operation', verbose_name='Полное название тех. параметра')
+    value = models.DecimalField(
+        decimal_places=6,
+        max_digits=12,
+        verbose_name='Значение тех. параметра'
+    )
+
+    class Meta:
+        unique_together = [
+            ('operation', 'param'),
+        ]
+        verbose_name = 'Тех. параметр операции бурения скважины'
+        verbose_name_plural = 'Тех. параметры операции бурения скважины'
+
+    def __str__(self):
+        return self.param.__str__()

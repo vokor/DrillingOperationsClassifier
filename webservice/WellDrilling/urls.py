@@ -16,7 +16,37 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from api.viewsets import (
+    OperationViewSet,
+    UnitViewSet,
+    SourceViewSet,
+    BranchViewSet,
+    TechParamViewSet,
+    WellViewSet,
+    DrillingOperationViewSet,
+    UploadViewSet,
+    drilling_operations_table,
+    well_drillling_dates,
+)
+from rest_framework import routers
+
+from WellDrilling.views import index
+
+router = routers.DefaultRouter()
+
+router.register('operations',OperationViewSet)
+router.register('units',UnitViewSet)
+router.register('branches',BranchViewSet)
+router.register('sources',SourceViewSet)
+router.register('techparams',TechParamViewSet)
+router.register('wells',WellViewSet)
+router.register('drillingoperations',DrillingOperationViewSet)
+router.register('handlefile', UploadViewSet, basename='api/handlefile')
+
 urlpatterns = [
+    path('', index),
     path('admin/', admin.site.urls),
-    path('api/', include('api.urls'))
+    path('api/', include(router.urls)),
+    path('api/drillings/', drilling_operations_table),
+    path('api/drilldates/', well_drillling_dates)
 ]
