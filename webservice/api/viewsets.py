@@ -99,7 +99,8 @@ def drilling_operations_table(request):
     params = request.GET.dict()
     params.pop('format')
     well_id = params.pop("well_id")
-    if drillings := get_drillings_table(well_id, params):
+    drillings = get_drillings_table(well_id, params)
+    if drillings:
         return JsonResponse({"success": True, "drillings": drillings})
     return JsonResponse({"success": False, "error": "Something went wrong"})
 
@@ -109,6 +110,7 @@ def well_drillling_dates(request):
     params = request.GET.dict()
     params.pop('format')
     well_id = params.pop("well_id")
-    if drilling_dates := get_well_drill_dates(well_id):
+    drilling_dates = get_well_drill_dates(well_id)
+    if drilling_dates:
         return JsonResponse({"success": True, "drill_dates": format_drill_dates_list(drilling_dates)})
     return JsonResponse({"success": False, "error": "Something went wrong"})

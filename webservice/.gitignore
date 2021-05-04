@@ -1,0 +1,7 @@
+.idea/*
+venv/
+frontend/.idea/*
+frontend/node_modules/*
+frontend/build/*
+/api/migrations/*
+/static/

@@ -1,0 +1,27 @@
+[
+  {
+    "drill_date": "2021-04-12",
+    "time_start": "17:08:16",
+    "time_end": "17:08:16",
+    "duration": "00:00:06",
+    "chisel_depth_start": "14.000000",
+    "chisel_depth_end": "16.000000",
+    "candles_amount": 4,
+    "slaughter_depth_start": "67.000000",
+    "slaughter_depth_end": "67.000000",
+    "tech_params": [
+      {
+        "param_id": 1,
+        "value": "123.56"
+      },
+      {
+        "param_id": 2,
+        "value": "456.789"
+      },
+      {
+        "param_id": 3,
+        "value": "456.789"
+      }
+    ]
+  }
+]

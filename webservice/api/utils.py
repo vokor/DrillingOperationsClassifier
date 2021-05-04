@@ -75,7 +75,8 @@ def drilling_operation_to_json(dr_op: DrillingOperation):
             }
         else:
             result["operation"] = None
-        if params := dr_op.tech_params.all():
+        params = dr_op.tech_params.all()
+        if params:
             result["tech_params"] = [format_tech_param(dr_op, p) for p in params]
         else:
             result["tech_params"] = []
@@ -85,10 +86,13 @@ def drilling_operation_to_json(dr_op: DrillingOperation):
 
 
 def get_drillings_table(well_id: int, params: dict):
-    if drillings := DrillingOperation.objects.filter(well_id=well_id):
-        if date := params.pop('drill_date', None):
+    drillings = DrillingOperation.objects.filter(well_id=well_id)
+    if drillings:
+        date = params.pop('drill_date', None)
+        if date:
             drillings = drillings.filter(drill_date__exact=date)
-        if day_part := params.pop('day_part', None):
+        day_part = params.pop('day_part', None)
+        if day_part:
             tstart_s, tend_s = get_day_part_time_range(day_part)
             drillings = drillings.filter(time_start__gte=tstart_s).filter(time_end__lte=tend_s)
         drillings = drillings.order_by('-drill_date', '-time_start', '-time_end')
@@ -102,7 +106,8 @@ def format_drill_dates_list(drill_dates):
 
 
 def get_well_drill_dates(well_id: int, distinct=True):
-    if drill_dates := DrillingOperation.objects.filter(well_id=well_id):
+    drill_dates = DrillingOperation.objects.filter(well_id=well_id)
+    if drill_dates:
         if distinct:
             drill_dates = drill_dates.distinct()
         return drill_dates.order_by('-drill_date').values('drill_date')
